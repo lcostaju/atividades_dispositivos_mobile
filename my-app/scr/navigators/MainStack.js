@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import HomeScreen from "../screens/HomeScreen";
-import { auth } from "../api/firebaseConfig";
+import { auth } from "../services/firebase";
 
 const Stack = createNativeStackNavigator();
 

@@ -6,7 +6,7 @@ import {
         StyleSheet,
         Alert,
 } from "react-native";
-import { auth } from "../api/firebaseConfig";
+import { auth } from "../services/firebase";
 import { signOut } from "firebase/auth";
 
 export default function HomeScreen( ) {

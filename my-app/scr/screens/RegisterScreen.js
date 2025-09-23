@@ -11,7 +11,7 @@ import {
         Platform,
 } from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../api/firebaseConfig";
+import { auth } from "../services/firebase";
 import { useNavigation } from "@react-navigation/native";
 
 export default function RegisterScreen() {
