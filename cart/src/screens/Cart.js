@@ -52,7 +52,6 @@ export const Cart = ({ items, getTotalPrice, removeItemFromCart }) => {
           onError={(error) => {
             console.log('Erro ao carregar imagem:', productImage, error);
           }}
-          defaultSource={require('../../../assets/icon.png')}
         />
         <View style={styles.productDetails}>
           <View style={styles.productHeader}>
