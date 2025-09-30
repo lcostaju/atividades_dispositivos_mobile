@@ -13,7 +13,7 @@ export const Cart = ({ items, getTotalPrice }) => {
     );
   }
 
-  // Por enquanto, apenas mostra quantos itens há no carrinho
+
   return (
     <View style={styles.container}>
       <Text style={styles.itemsCount}>
