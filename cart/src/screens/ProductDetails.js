@@ -25,8 +25,8 @@ export const ProductDetails = ({ route, addItemToCart }) => {
 		loadProduct();
 	}, [productId]);
 
-	function onAddToCart() {
-		addItemToCart(product.id);
+	async function onAddToCart() {
+		await addItemToCart(product.id);
 	}
 
 	return (

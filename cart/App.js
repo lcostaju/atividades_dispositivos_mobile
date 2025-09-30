@@ -12,28 +12,39 @@ const App = () => {
   const Stack = createNativeStackNavigator();
   const [itensCarrinho, setItensCarrinho] = useState([]);
 
-  const addItemToCart = (id) => {
-    const product = getProduct(id);
-    setItensCarrinho((prevItems) => {
-      const item = prevItems.find((item) => item.id == id);
-      if (!item) {
-        return [
-          ...prevItems,
-          {
-            id,
-            qty: 1,
-            product,
-          },
-        ];
-      } else {
-        return prevItems.map((item) => {
-          if (item.id == id) {
-            item.qty++;
-          }
-          return item;
-        });
+  const addItemToCart = async (id) => {
+    try {
+      const product = await getProduct(id);
+      console.log('Produto carregado para o carrinho:', product);
+      
+      if (!product) {
+        console.error('Produto não encontrado com ID:', id);
+        return;
       }
-    });
+
+      setItensCarrinho((prevItems) => {
+        const item = prevItems.find((item) => item.id == id);
+        if (!item) {
+          return [
+            ...prevItems,
+            {
+              id,
+              qty: 1,
+              product,
+            },
+          ];
+        } else {
+          return prevItems.map((item) => {
+            if (item.id == id) {
+              item.qty++;
+            }
+            return item;
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao adicionar produto ao carrinho:', error);
+    }
   };
 
   const getItemsCount = () => {

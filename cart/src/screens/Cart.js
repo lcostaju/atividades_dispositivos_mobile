@@ -16,9 +16,10 @@ export const Cart = ({ items, getTotalPrice, removeItemFromCart }) => {
 
   // Função para confirmar remoção do item
   const handleRemoveItem = (item) => {
+    const productName = item.product?.name || "este produto";
     Alert.alert(
       "Remover produto",
-      `Deseja remover "${item.product.name}" do carrinho?`,
+      `Deseja remover "${productName}" do carrinho?`,
       [
         {
           text: "Cancelar",
@@ -35,19 +36,27 @@ export const Cart = ({ items, getTotalPrice, removeItemFromCart }) => {
 
   // Função para renderizar cada item da lista
   const renderCartItem = ({ item }) => {
-    const subtotal = item.product.price * item.qty;
+    // Verificações de segurança para dados do produto
+    const product = item.product || {};
+    const productName = product.name || "Produto sem nome";
+    const productPrice = product.price || 0;
+    const productImage = product.image || { uri: "" };
+    const subtotal = productPrice * item.qty;
     
     return (
       <View style={styles.itemContainer}>
         <Image 
-          source={item.product.image} 
+          source={productImage} 
           style={styles.productImage}
           resizeMode="contain"
-          onError={() => console.log('Erro ao carregar imagem:', item.product.image)}
+          onError={(error) => {
+            console.log('Erro ao carregar imagem:', productImage, error);
+          }}
+          defaultSource={require('../../../assets/icon.png')}
         />
         <View style={styles.productDetails}>
           <View style={styles.productHeader}>
-            <Text style={styles.productName}>{item.product.name}</Text>
+            <Text style={styles.productName}>{productName}</Text>
             <TouchableOpacity 
               style={styles.removeButton}
               onPress={() => handleRemoveItem(item)}
@@ -56,7 +65,7 @@ export const Cart = ({ items, getTotalPrice, removeItemFromCart }) => {
             </TouchableOpacity>
           </View>
           <Text style={styles.productPrice}>
-            {numberFormat(item.product.price)} cada
+            {numberFormat(productPrice)} cada
           </Text>
           <View style={styles.quantityRow}>
             <View style={styles.quantityContainer}>
