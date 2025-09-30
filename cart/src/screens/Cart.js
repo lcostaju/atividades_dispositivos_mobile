@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, StyleSheet } from "react-native";
 
 export const Cart = ({ items, getTotalPrice }) => {
   // Verifica se o carrinho está vazio
@@ -17,11 +17,20 @@ export const Cart = ({ items, getTotalPrice }) => {
   const renderCartItem = ({ item }) => {
     return (
       <View style={styles.itemContainer}>
-        <Text style={styles.productName}>{item.product.name}</Text>
-        <Text style={styles.productInfo}>Quantidade: {item.qty}</Text>
-        <Text style={styles.productInfo}>
-          Preço unitário: R$ {item.product.price.toFixed(2)}
-        </Text>
+        <Image 
+          source={item.product.image} 
+          style={styles.productImage}
+          resizeMode="contain"
+        />
+        <View style={styles.productDetails}>
+          <Text style={styles.productName}>{item.product.name}</Text>
+          <Text style={styles.productPrice}>
+            R$ {item.product.price.toFixed(2)} cada
+          </Text>
+          <View style={styles.quantityContainer}>
+            <Text style={styles.quantityText}>Quantidade: {item.qty}</Text>
+          </View>
+        </View>
       </View>
     );
   };
@@ -80,18 +89,52 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-    marginVertical: 4,
+    marginVertical: 8,
+    marginHorizontal: 4,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  productImage: {
+    width: 80,
+    height: 80,
+    backgroundColor: "#f0f0f0",
     borderRadius: 8,
+    marginRight: 16,
+  },
+  productDetails: {
+    flex: 1,
   },
   productName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
+    color: "#333",
+    marginBottom: 6,
+  },
+  productPrice: {
+    fontSize: 16,
+    color: "#666",
     marginBottom: 8,
   },
-  productInfo: {
+  quantityContainer: {
+    backgroundColor: "#f8f9fa",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    alignSelf: "flex-start",
+  },
+  quantityText: {
     fontSize: 14,
-    color: "#666",
-    marginBottom: 4,
+    fontWeight: "600",
+    color: "#495057",
   },
 });
