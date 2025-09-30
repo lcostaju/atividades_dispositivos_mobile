@@ -27,14 +27,14 @@ export const Cart = ({ items, getTotalPrice }) => {
         <View style={styles.productDetails}>
           <Text style={styles.productName}>{item.product.name}</Text>
           <Text style={styles.productPrice}>
-            R$ {item.product.price.toFixed(2)} cada
+            {numberFormat(item.product.price)} cada
           </Text>
           <View style={styles.quantityRow}>
             <View style={styles.quantityContainer}>
-              <Text style={styles.quantityText}>Quantidade: {item.qty}</Text>
+              <Text style={styles.quantityText}>Qty: {item.qty}</Text>
             </View>
             <Text style={styles.subtotalText}>
-              Subtotal: R$ {subtotal.toFixed(2)}
+              {numberFormat(subtotal)}
             </Text>
           </View>
         </View>
@@ -53,14 +53,23 @@ export const Cart = ({ items, getTotalPrice }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderCartItem}
         style={styles.list}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
       />
       
       {/* Seção do Total Geral */}
       <View style={styles.totalContainer}>
+        <View style={styles.summaryRow}>
+          <Text style={styles.itemsSummary}>
+            {items.length} {items.length === 1 ? 'produto' : 'produtos'} • {" "}
+            {items.reduce((sum, item) => sum + item.qty, 0)} {" "}
+            {items.reduce((sum, item) => sum + item.qty, 0) === 1 ? 'item' : 'itens'}
+          </Text>
+        </View>
         <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Total Geral:</Text>
           <Text style={styles.totalValue}>
-            R$ {getTotalPrice().toFixed(2)}
+            {numberFormat(getTotalPrice())}
           </Text>
         </View>
       </View>
@@ -103,6 +112,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+  },
+  listContent: {
+    paddingBottom: 8,
   },
   itemContainer: {
     backgroundColor: "white",
@@ -178,6 +190,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  summaryRow: {
+    marginBottom: 12,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  itemsSummary: {
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+    fontWeight: "500",
   },
   totalRow: {
     flexDirection: "row",
