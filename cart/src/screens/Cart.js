@@ -1,7 +1,7 @@
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { numberFormat } from "../services/numberFormat";
 
-export const Cart = ({ items, getTotalPrice }) => {
+export const Cart = ({ items, getTotalPrice, removeItemFromCart }) => {
   // Verifica se o carrinho está vazio
   if (!items || items.length === 0) {
     return (
@@ -14,6 +14,25 @@ export const Cart = ({ items, getTotalPrice }) => {
     );
   }
 
+  // Função para confirmar remoção do item
+  const handleRemoveItem = (item) => {
+    Alert.alert(
+      "Remover produto",
+      `Deseja remover "${item.product.name}" do carrinho?`,
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Remover",
+          style: "destructive",
+          onPress: () => removeItemFromCart(item.id)
+        }
+      ]
+    );
+  };
+
   // Função para renderizar cada item da lista
   const renderCartItem = ({ item }) => {
     const subtotal = item.product.price * item.qty;
@@ -24,9 +43,18 @@ export const Cart = ({ items, getTotalPrice }) => {
           source={item.product.image} 
           style={styles.productImage}
           resizeMode="contain"
+          onError={() => console.log('Erro ao carregar imagem:', item.product.image)}
         />
         <View style={styles.productDetails}>
-          <Text style={styles.productName}>{item.product.name}</Text>
+          <View style={styles.productHeader}>
+            <Text style={styles.productName}>{item.product.name}</Text>
+            <TouchableOpacity 
+              style={styles.removeButton}
+              onPress={() => handleRemoveItem(item)}
+            >
+              <Text style={styles.removeButtonText}>✕</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.productPrice}>
             {numberFormat(item.product.price)} cada
           </Text>
@@ -140,15 +168,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     marginRight: 16,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
   },
   productDetails: {
     flex: 1,
+  },
+  productHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: 6,
   },
   productName: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 6,
+    flex: 1,
+    marginRight: 8,
+  },
+  removeButton: {
+    backgroundColor: "#ff4757",
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  removeButtonText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
   },
   productPrice: {
     fontSize: 16,

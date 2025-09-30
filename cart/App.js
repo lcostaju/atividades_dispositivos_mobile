@@ -44,6 +44,12 @@ const App = () => {
     return itensCarrinho.reduce((sum, item) => sum + item.product.price * item.qty, 0);
   };
 
+  const removeItemFromCart = (id) => {
+    setItensCarrinho((prevItems) => {
+      return prevItems.filter((item) => item.id != id);
+    });
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -74,7 +80,7 @@ const App = () => {
             headerRight: () => <CartIcon navigation={navigation} getItemsCount={getItemsCount} />,
           })}
         >
-          {(props) => <Cart {...props} items={itensCarrinho} getTotalPrice={getTotalPrice} />}
+          {(props) => <Cart {...props} items={itensCarrinho} getTotalPrice={getTotalPrice} removeItemFromCart={removeItemFromCart} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
