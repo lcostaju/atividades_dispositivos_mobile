@@ -15,6 +15,8 @@ export const Cart = ({ items, getTotalPrice }) => {
 
   // Função para renderizar cada item da lista
   const renderCartItem = ({ item }) => {
+    const subtotal = item.product.price * item.qty;
+    
     return (
       <View style={styles.itemContainer}>
         <Image 
@@ -27,8 +29,13 @@ export const Cart = ({ items, getTotalPrice }) => {
           <Text style={styles.productPrice}>
             R$ {item.product.price.toFixed(2)} cada
           </Text>
-          <View style={styles.quantityContainer}>
-            <Text style={styles.quantityText}>Quantidade: {item.qty}</Text>
+          <View style={styles.quantityRow}>
+            <View style={styles.quantityContainer}>
+              <Text style={styles.quantityText}>Quantidade: {item.qty}</Text>
+            </View>
+            <Text style={styles.subtotalText}>
+              Subtotal: R$ {subtotal.toFixed(2)}
+            </Text>
           </View>
         </View>
       </View>
@@ -47,6 +54,16 @@ export const Cart = ({ items, getTotalPrice }) => {
         renderItem={renderCartItem}
         style={styles.list}
       />
+      
+      {/* Seção do Total Geral */}
+      <View style={styles.totalContainer}>
+        <View style={styles.totalRow}>
+          <Text style={styles.totalLabel}>Total Geral:</Text>
+          <Text style={styles.totalValue}>
+            R$ {getTotalPrice().toFixed(2)}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -125,16 +142,56 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 8,
   },
+  quantityRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 4,
+  },
   quantityContainer: {
     backgroundColor: "#f8f9fa",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    alignSelf: "flex-start",
   },
   quantityText: {
     fontSize: 14,
     fontWeight: "600",
     color: "#495057",
+  },
+  subtotalText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#e74c3c",
+  },
+  totalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    marginTop: 8,
+    marginHorizontal: 4,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  totalRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  totalLabel: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  totalValue: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#e74c3c",
   },
 });
