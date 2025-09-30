@@ -1,4 +1,5 @@
 import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import { numberFormat } from "../services/numberFormat";
 
 export const Cart = ({ items, getTotalPrice }) => {
   // Verifica se o carrinho está vazio
